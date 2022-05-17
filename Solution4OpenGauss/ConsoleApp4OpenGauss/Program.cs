@@ -1,34 +1,113 @@
 ﻿using Npgsql;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp4OpenGauss
 {
     internal class Program
     {
-        static void Main(string[] args)
-        {
-        }
-    }
-}
-
-namespace Driver
-{
-    public class AzurePostgresCreate
-    {
         // Obtain connection string information from the portal
         //
         private static string Host = "localhost";
-        private static string User = "sa";
-        private static string DBname = "benchmark";
+        private static string User = "gaussdb";
+        private static string DBname = "mygaussdb";
         private static string Password = "Trq@7251";
         private static string Port = "5432";
 
         static void Main(string[] args)
+        {
+            bool isQuit = false;
+            do
+            {
+                int MySelect = -1;
+                Console.WriteLine("1. 新增openGauss資料表及資料");
+                Console.WriteLine("2. 讀取openGauss資料表");
+                Console.WriteLine("3. 更新openGauss資料");
+                Console.WriteLine("4. 刪除openGauss資料");
+                Console.WriteLine("5. 離開");
+                Console.WriteLine("請從 1 到 5 輸入一個數字，並且按下ENTER鍵...");
+                try
+                {
+                    MySelect = int.Parse(Console.ReadLine());
+                }
+                catch (Exception)
+                {
+                    //只要不是輸入正確的值，就重新輸入。
+                }
+                OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
+                /*
+                 * 因為，openGaussDb在呼叫過程中，第一次和第二次的呼叫過程中，如果時間間距太短，第一次可以成功，但第二次就失敗。
+                 * 所以，我用Switch...Case的方式讓CRUD為四個主要程序，並且每一個主要程序用Try...Catch的方式來包裝，只要是遇到時間過短的連續呼叫，就到Catch的區塊進行break。
+                 */
+                switch (MySelect)
+                {
+                    case 1:
+                        {
+                            Console.WriteLine("你選擇 1. 新增openGauss資料表及資料...");
+                            //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
+                            myEvent.CreateOpenGaussDbTable(Host, User, DBname, Port, Password);
+                            break;
+                        }
+                    case 2:
+                        {
+                            try
+                            {
+                                Console.WriteLine("你選擇 2. 讀取openGauss資料表...");
+                                //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password);
+                                break;
+                            }
+                            catch (Exception)
+                            {
+                                break;
+                            }
+                        }
+                    case 3:
+                        {
+                            try
+                            {
+                                Console.WriteLine("你選擇 3. 更新openGauss資料...");
+                                //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
+                                myEvent.UpdateOpenGaussDbTable(Host, User, DBname, Port, Password);
+                                break;
+                            }
+                            catch (Exception)
+                            {
+                                break;
+                            }
+                        }
+                    case 4:
+                        {
+                            try
+                            {
+                                Console.WriteLine("你選擇 4. 刪除openGauss資料...");
+                                //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
+                                myEvent.DeleteOpenGaussDbTable(Host, User, DBname, Port, Password);
+                                break;
+                            }
+                            catch (Exception)
+                            {
+                                break;
+                            }
+                        }
+                    case 5:
+                        {
+                            Console.WriteLine("你選擇 5. 離開...");
+                            isQuit = true;
+                            Console.WriteLine("請按任意鍵離開...");
+                            Console.ReadLine();
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            } while (!isQuit);
+        }
+    }
+
+    public class OpenGaussDbEvent
+    {
+        public void CreateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
         {
             // Build connection string using parameters from portal
             //
@@ -73,24 +152,14 @@ namespace Driver
                     int nRows = command.ExecuteNonQuery();
                     Console.Out.WriteLine(String.Format("Number of rows inserted={0}", nRows));
                 }
+
+                conn.Close();
             }
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
-    }
-
-    public class AzurePostgresRead
-    {
-        // Obtain connection string information from the portal
-        //
-        private static string Host = "localhost";
-        private static string User = "sa";
-        private static string DBname = "benchmark";
-        private static string Password = "Trq@7251";
-        private static string Port = "5432";
-
-        static void Main(string[] args)
+        public void ReadOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
         {
             // Build connection string using parameters from portal
             //
@@ -105,14 +174,11 @@ namespace Driver
 
             using (var conn = new NpgsqlConnection(connString))
             {
-
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
-
-
+                
                 using (var command = new NpgsqlCommand("SELECT * FROM inventory", conn))
                 {
-
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
@@ -127,24 +193,13 @@ namespace Driver
                     }
                     reader.Close();
                 }
-            }
 
+                conn.Close();
+            }
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
-    }
-
-    public class AzurePostgresUpdate
-    {
-        // Obtain connection string information from the portal
-        //
-        private static string Host = "localhost";
-        private static string User = "sa";
-        private static string DBname = "benchmark";
-        private static string Password = "Trq@7251";
-        private static string Port = "5432";
-
-        static void Main(string[] args)
+        public void UpdateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
         {
             // Build connection string using parameters from portal
             //
@@ -159,7 +214,6 @@ namespace Driver
 
             using (var conn = new NpgsqlConnection(connString))
             {
-
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
 
@@ -170,24 +224,14 @@ namespace Driver
                     int nRows = command.ExecuteNonQuery();
                     Console.Out.WriteLine(String.Format("Number of rows updated={0}", nRows));
                 }
+
+                conn.Close();
             }
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
-    }
-
-    public class AzurePostgresDelete
-    {
-        // Obtain connection string information from the portal
-        //
-        private static string Host = "localhost";
-        private static string User = "sa";
-        private static string DBname = "benchmark";
-        private static string Password = "Trq@7251";
-        private static string Port = "5432";
-
-        static void Main(string[] args)
+        public void DeleteOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
         {
             // Build connection string using parameters from portal
             //
@@ -212,10 +256,13 @@ namespace Driver
                     int nRows = command.ExecuteNonQuery();
                     Console.Out.WriteLine(String.Format("Number of rows deleted={0}", nRows));
                 }
+
+                conn.Close();
             }
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
     }
+
 }

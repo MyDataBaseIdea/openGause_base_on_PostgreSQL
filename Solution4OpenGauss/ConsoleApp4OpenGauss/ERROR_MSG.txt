@@ -1,0 +1,29 @@
+Npgsql.PostgresException
+  HResult=0x80004005
+  Message=0A000: DISCARD statement is not yet supported.
+  Source=Npgsql
+  StackTrace: 
+   at Npgsql.Internal.NpgsqlConnector.<<ReadMessage>g__ReadMessageLong|211_0>d.MoveNext()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Npgsql.NpgsqlDataReader.<NextResult>d__47.MoveNext()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.<ExecuteReader>d__116.MoveNext()
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Npgsql.NpgsqlCommand.<ExecuteReader>d__116.MoveNext()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Npgsql.NpgsqlCommand.<ExecuteNonQuery>d__104.MoveNext()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at ConsoleApp4OpenGauss.OpenGaussDbEvent.UpdateOpenGaussDbTable(String Host, String User, String DBname, String Port, String Password) in C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\Program.cs:line 204
+   at ConsoleApp4OpenGauss.Program.Main(String[] args) in C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\Program.cs:line 56
+
+  此例外狀況原先在此呼叫堆疊擲回: 
+    [外部程式碼]
+    ConsoleApp4OpenGauss.OpenGaussDbEvent.UpdateOpenGaussDbTable(string, string, string, string, string) 位於 Program.cs
+    ConsoleApp4OpenGauss.Program.Main(string[]) 位於 Program.cs
