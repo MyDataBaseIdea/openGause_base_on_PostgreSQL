@@ -10,3 +10,5 @@ openGause_base_on_PostgreSQL
 #### docker pull enmotech/opengauss:2.1.0
 #### docker run --name opengauss --privileged=true -d -p 5432:5432 -e GS_PASSWORD=Trq@7251 enmotech/opengauss:2.1.0
 #### docker exec -it opengauss bash
+### Nuget 元件
+#### NpgSQL
