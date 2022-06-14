@@ -8,10 +8,10 @@ namespace ConsoleApp4OpenGauss
     {
         // Obtain connection string information from the portal
         //
-        private static string Host = "localhost";
+        private static string Host = "192.168.1.109";
         private static string User = "gaussdb";
-        private static string DBname = "mygaussdb";
-        private static string Password = "Trq@7251";
+        private static string DBname = "mytest";
+        private static string Password = "P@ssw0rd";//"Trq@7251";
         private static string Port = "5432";
 
         static void Main(string[] args)
@@ -20,12 +20,12 @@ namespace ConsoleApp4OpenGauss
             do
             {
                 int MySelect = -1;
-                Console.WriteLine("1. 新增openGauss資料表及資料");
-                Console.WriteLine("2. 讀取openGauss資料表");
-                Console.WriteLine("3. 更新openGauss資料");
-                Console.WriteLine("4. 刪除openGauss資料");
-                Console.WriteLine("5. 離開");
-                Console.WriteLine("請從 1 到 5 輸入一個數字，並且按下ENTER鍵...");
+                Console.WriteLine("1. Create New openGauss Table and Data");
+                Console.WriteLine("2. Read openGauss Table");
+                Console.WriteLine("3. Update openGauss Data");
+                Console.WriteLine("4. Delete openGauss Data");
+                Console.WriteLine("5. Exit");
+                Console.WriteLine("Please select a number from 1 to 5 and click ENTER...");
                 try
                 {
                     MySelect = int.Parse(Console.ReadLine());
