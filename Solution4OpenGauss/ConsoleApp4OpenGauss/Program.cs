@@ -13,6 +13,7 @@ namespace ConsoleApp4OpenGauss
         private static string DBname = "mytest";
         private static string Password = "P@ssw0rd";//"Trq@7251";
         private static string Port = "5432";
+        private static string TableName = "inventory";
 
         static void Main(string[] args)
         {
@@ -43,18 +44,18 @@ namespace ConsoleApp4OpenGauss
                 {
                     case 1:
                         {
-                            Console.WriteLine("你選擇 1. 新增openGauss資料表及資料...");
+                            Console.WriteLine("You select 1. Create New openGauss Table and Data...");
                             //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                            myEvent.CreateOpenGaussDbTable(Host, User, DBname, Port, Password);
+                            myEvent.CreateOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
                             break;
                         }
                     case 2:
                         {
                             try
                             {
-                                Console.WriteLine("你選擇 2. 讀取openGauss資料表...");
+                                Console.WriteLine("You select 2. Read openGauss Table...");
                                 //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password);
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
                                 break;
                             }
                             catch (Exception)
@@ -66,9 +67,9 @@ namespace ConsoleApp4OpenGauss
                         {
                             try
                             {
-                                Console.WriteLine("你選擇 3. 更新openGauss資料...");
+                                Console.WriteLine("You select 3. Update openGauss Data...");
                                 //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                                myEvent.UpdateOpenGaussDbTable(Host, User, DBname, Port, Password);
+                                myEvent.UpdateOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
                                 break;
                             }
                             catch (Exception)
@@ -80,9 +81,9 @@ namespace ConsoleApp4OpenGauss
                         {
                             try
                             {
-                                Console.WriteLine("你選擇 4. 刪除openGauss資料...");
+                                Console.WriteLine("You select 4. Delete openGauss Data...");
                                 //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                                myEvent.DeleteOpenGaussDbTable(Host, User, DBname, Port, Password);
+                                myEvent.DeleteOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
                                 break;
                             }
                             catch (Exception)
@@ -92,9 +93,9 @@ namespace ConsoleApp4OpenGauss
                         }
                     case 5:
                         {
-                            Console.WriteLine("你選擇 5. 離開...");
+                            Console.WriteLine("You select 5. Exit...");
                             isQuit = true;
-                            Console.WriteLine("請按任意鍵離開...");
+                            Console.WriteLine("Please press any key to exit...");
                             Console.ReadLine();
                             break;
                         }
@@ -107,7 +108,7 @@ namespace ConsoleApp4OpenGauss
 
     public class OpenGaussDbEvent
     {
-        public void CreateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
+        public void CreateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
         {
             // Build connection string using parameters from portal
             //
@@ -127,20 +128,20 @@ namespace ConsoleApp4OpenGauss
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
 
-                using (var command = new NpgsqlCommand("DROP TABLE IF EXISTS inventory", conn))
+                using (var command = new NpgsqlCommand("DROP TABLE IF EXISTS " + TableName, conn))
                 {
                     command.ExecuteNonQuery();
                     Console.Out.WriteLine("Finished dropping table (if existed)");
 
                 }
 
-                using (var command = new NpgsqlCommand("CREATE TABLE inventory(id serial PRIMARY KEY, name VARCHAR(50), quantity INTEGER)", conn))
+                using (var command = new NpgsqlCommand("CREATE TABLE " + TableName + "(id serial PRIMARY KEY, name VARCHAR(50), quantity INTEGER)", conn))
                 {
                     command.ExecuteNonQuery();
                     Console.Out.WriteLine("Finished creating table");
                 }
 
-                using (var command = new NpgsqlCommand("INSERT INTO inventory (name, quantity) VALUES (@n1, @q1), (@n2, @q2), (@n3, @q3)", conn))
+                using (var command = new NpgsqlCommand("INSERT INTO " + TableName + " (name, quantity) VALUES (@n1, @q1), (@n2, @q2), (@n3, @q3)", conn))
                 {
                     command.Parameters.AddWithValue("n1", "banana");
                     command.Parameters.AddWithValue("q1", 150);
@@ -159,7 +160,7 @@ namespace ConsoleApp4OpenGauss
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
-        public void ReadOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
+        public void ReadOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
         {
             // Build connection string using parameters from portal
             //
@@ -176,8 +177,8 @@ namespace ConsoleApp4OpenGauss
             {
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
-                
-                using (var command = new NpgsqlCommand("SELECT * FROM inventory", conn))
+
+                using (var command = new NpgsqlCommand("SELECT * FROM " + TableName, conn))
                 {
                     var reader = command.ExecuteReader();
                     while (reader.Read())
@@ -199,7 +200,7 @@ namespace ConsoleApp4OpenGauss
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
-        public void UpdateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
+        public void UpdateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
         {
             // Build connection string using parameters from portal
             //
@@ -217,7 +218,7 @@ namespace ConsoleApp4OpenGauss
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
 
-                using (var command = new NpgsqlCommand("UPDATE inventory SET quantity = @q WHERE name = @n", conn))
+                using (var command = new NpgsqlCommand("UPDATE " + TableName + " SET quantity = @q WHERE name = @n", conn))
                 {
                     command.Parameters.AddWithValue("n", "banana");
                     command.Parameters.AddWithValue("q", 200);
@@ -231,7 +232,7 @@ namespace ConsoleApp4OpenGauss
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
         }
-        public void DeleteOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password)
+        public void DeleteOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
         {
             // Build connection string using parameters from portal
             //
@@ -249,7 +250,7 @@ namespace ConsoleApp4OpenGauss
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
 
-                using (var command = new NpgsqlCommand("DELETE FROM inventory WHERE name = @n", conn))
+                using (var command = new NpgsqlCommand("DELETE FROM " + TableName + " WHERE name = @n", conn))
                 {
                     command.Parameters.AddWithValue("n", "orange");
 
