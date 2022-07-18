@@ -8,12 +8,13 @@ namespace ConsoleApp4OpenGauss
     {
         // Obtain connection string information from the portal
         //
+        //private static string Host = "tgtgaussdbfast.eastasia.azurecontainer.io";//"192.168.1.109";
         private static string Host = "192.168.1.109";
         private static string User = "gaussdb";
         private static string DBname = "mytest";
         private static string Password = "P@ssw0rd";//"Trq@7251";
         private static string Port = "5432";
-        private static string TableName = "inventory";
+        private static string TableName = "inventory1";
 
         static void Main(string[] args)
         {
@@ -21,11 +22,12 @@ namespace ConsoleApp4OpenGauss
             do
             {
                 int MySelect = -1;
-                Console.WriteLine("1. Create New openGauss Table and Data");
-                Console.WriteLine("2. Read openGauss Table");
-                Console.WriteLine("3. Update openGauss Data");
-                Console.WriteLine("4. Delete openGauss Data");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("1. Create New openGauss Table");
+                Console.WriteLine("2. Create New openGauss Data");
+                Console.WriteLine("3. Read openGauss Table");
+                Console.WriteLine("4. Update openGauss Data");
+                Console.WriteLine("5. Delete openGauss Data");
+                Console.WriteLine("6. Exit");
                 Console.WriteLine("Please select a number from 1 to 5 and click ENTER...");
                 try
                 {
@@ -44,32 +46,44 @@ namespace ConsoleApp4OpenGauss
                 {
                     case 1:
                         {
-                            Console.WriteLine("You select 1. Create New openGauss Table and Data...");
-                            //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                            myEvent.CreateOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                            Console.WriteLine("You select 1. Create New openGauss Table...");
+                            Console.Out.WriteLine("Opening connection");
+                            string FeedBack = "";
+                            myEvent.CreateOpenGaussDbTable(Host, User, DBname, Port, Password, TableName, out FeedBack);
+                            Console.WriteLine(FeedBack);
+                            Console.WriteLine("Press RETURN to exit");
+                            Console.ReadLine();
                             break;
                         }
                     case 2:
                         {
-                            try
+                            Console.WriteLine("You select 2. Create New openGauss Data...");
+                            string FeedBack = "";
+                            string StrName = "";
+                            string IntQuantity = "";
+                            do
                             {
-                                Console.WriteLine("You select 2. Read openGauss Table...");
-                                //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
-                                break;
-                            }
-                            catch (Exception)
-                            {
-                                break;
-                            }
+                                Console.WriteLine("Please input name...");
+                                StrName = Console.ReadLine();
+                                Console.WriteLine("Please input q...");
+                                IntQuantity = Console.ReadLine();
+                            } while ((StrName == "") || (IntQuantity == ""));
+                            Console.Out.WriteLine("Opening connection");
+                            myEvent.CreateOpenGaussDbData(Host, User, DBname, Port, Password, TableName, StrName, IntQuantity, out FeedBack);
+                            myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                            Console.WriteLine(FeedBack);
+                            Console.WriteLine("Press RETURN to exit");
+                            Console.ReadLine();
+                            break;
                         }
                     case 3:
                         {
                             try
                             {
-                                Console.WriteLine("You select 3. Update openGauss Data...");
-                                //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                                myEvent.UpdateOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                Console.WriteLine("You select 3. Read openGauss Table...");
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                Console.WriteLine("Press RETURN to exit");
+                                Console.ReadLine();
                                 break;
                             }
                             catch (Exception)
@@ -81,9 +95,24 @@ namespace ConsoleApp4OpenGauss
                         {
                             try
                             {
-                                Console.WriteLine("You select 4. Delete openGauss Data...");
-                                //OpenGaussDbEvent myEvent = new OpenGaussDbEvent();
-                                myEvent.DeleteOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                Console.WriteLine("You select 4. Update openGauss Data...");
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                string FeedBack = "";
+                                string StrName = "";
+                                string IntQuantity = "";
+                                do
+                                {
+                                    Console.WriteLine("Please input name of select...");
+                                    StrName = Console.ReadLine();
+                                    Console.WriteLine("Please input q to change...");
+                                    IntQuantity = Console.ReadLine();
+                                } while ((StrName == "") || (IntQuantity == ""));
+                                Console.Out.WriteLine("Opening connection");
+                                myEvent.UpdateOpenGaussDbTable(Host, User, DBname, Port, Password, TableName, StrName, IntQuantity,out FeedBack);
+                                Console.WriteLine(FeedBack);
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                Console.WriteLine("Press RETURN to exit");
+                                Console.ReadLine();
                                 break;
                             }
                             catch (Exception)
@@ -93,10 +122,33 @@ namespace ConsoleApp4OpenGauss
                         }
                     case 5:
                         {
-                            Console.WriteLine("You select 5. Exit...");
+                            try
+                            {
+                                Console.WriteLine("You select 5. Delete openGauss Data...");
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                string FeedBack="";
+                                string StrName = "";
+                                do
+                                {
+                                    Console.WriteLine("Please input name of select...");
+                                    StrName = Console.ReadLine();
+                                } while ((StrName == ""));
+                                Console.Out.WriteLine("Opening connection");
+                                myEvent.DeleteOpenGaussDbTable(Host, User, DBname, Port, Password, TableName, StrName,out FeedBack);
+                                myEvent.ReadOpenGaussDbTable(Host, User, DBname, Port, Password, TableName);
+                                Console.WriteLine("Please press any key to exit...");
+                                Console.ReadLine();
+                                break;
+                            }
+                            catch (Exception)
+                            {
+                                break;
+                            }
+                        }
+                    case 6:
+                        {
+                            Console.WriteLine("You select 6. Exit...");
                             isQuit = true;
-                            Console.WriteLine("Please press any key to exit...");
-                            Console.ReadLine();
                             break;
                         }
                     default:
@@ -108,65 +160,65 @@ namespace ConsoleApp4OpenGauss
 
     public class OpenGaussDbEvent
     {
-        public void CreateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
+        private static string ConnectStringFormat = "Server={0};Username={1};Database={2};Port={3};Password={4};SSLMode=Prefer;No Reset On Close=true";
+        public void CreateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName, out string StrFeedBack)
         {
-            // Build connection string using parameters from portal
-            //
             string connString =
-                String.Format(
-                    "Server={0};Username={1};Database={2};Port={3};Password={4};SSLMode=Prefer",
+                String.Format(ConnectStringFormat,
                     Host,
                     User,
                     DBname,
                     Port,
                     Password);
 
-
             using (var conn = new NpgsqlConnection(connString))
-
             {
-                Console.Out.WriteLine("Opening connection");
                 conn.Open();
-
                 using (var command = new NpgsqlCommand("DROP TABLE IF EXISTS " + TableName, conn))
                 {
                     command.ExecuteNonQuery();
-                    Console.Out.WriteLine("Finished dropping table (if existed)");
-
                 }
 
                 using (var command = new NpgsqlCommand("CREATE TABLE " + TableName + "(id serial PRIMARY KEY, name VARCHAR(50), quantity INTEGER)", conn))
                 {
                     command.ExecuteNonQuery();
-                    Console.Out.WriteLine("Finished creating table");
-                }
-
-                using (var command = new NpgsqlCommand("INSERT INTO " + TableName + " (name, quantity) VALUES (@n1, @q1), (@n2, @q2), (@n3, @q3)", conn))
-                {
-                    command.Parameters.AddWithValue("n1", "banana");
-                    command.Parameters.AddWithValue("q1", 150);
-                    command.Parameters.AddWithValue("n2", "orange");
-                    command.Parameters.AddWithValue("q2", 154);
-                    command.Parameters.AddWithValue("n3", "apple");
-                    command.Parameters.AddWithValue("q3", 100);
-
-                    int nRows = command.ExecuteNonQuery();
-                    Console.Out.WriteLine(String.Format("Number of rows inserted={0}", nRows));
+                    StrFeedBack = "Finished creating table";
                 }
 
                 conn.Close();
             }
+        }
+        public void CreateOpenGaussDbData(string Host, string User, string DBname, string Port, string Password, string TableName, string strName, string strQuantity, out string StrFeedBack)
+        {
+            string connString =
+                String.Format(ConnectStringFormat,
+                    Host,
+                    User,
+                    DBname,
+                    Port,
+                    Password);
 
-            Console.WriteLine("Press RETURN to exit");
-            Console.ReadLine();
+            using (var conn = new NpgsqlConnection(connString))
+
+            {
+                conn.Open();
+
+                using (var command = new NpgsqlCommand("INSERT INTO " + TableName + " (name, quantity) VALUES (@n1, @q1)", conn))
+                {
+                    command.Parameters.AddWithValue("n1", strName);
+                    command.Parameters.AddWithValue("q1", strQuantity);
+
+                    int nRows = command.ExecuteNonQuery();
+                    StrFeedBack=String.Format("Number of rows inserted={0}", nRows);
+                }
+
+                conn.Close();
+            }
         }
         public void ReadOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
         {
-            // Build connection string using parameters from portal
-            //
             string connString =
-                String.Format(
-                    "Server={0}; User Id={1}; Database={2}; Port={3}; Password={4};SSLMode=Prefer",
+            String.Format(ConnectStringFormat,
                     Host,
                     User,
                     DBname,
@@ -194,19 +246,13 @@ namespace ConsoleApp4OpenGauss
                     }
                     reader.Close();
                 }
-
                 conn.Close();
             }
-            Console.WriteLine("Press RETURN to exit");
-            Console.ReadLine();
         }
-        public void UpdateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
+        public void UpdateOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName, string strName, string strQuantity, out string StrFeedBack)
         {
-            // Build connection string using parameters from portal
-            //
             string connString =
-                String.Format(
-                    "Server={0}; User Id={1}; Database={2}; Port={3}; Password={4};SSLMode=Prefer",
+            String.Format(ConnectStringFormat,
                     Host,
                     User,
                     DBname,
@@ -215,30 +261,23 @@ namespace ConsoleApp4OpenGauss
 
             using (var conn = new NpgsqlConnection(connString))
             {
-                Console.Out.WriteLine("Opening connection");
                 conn.Open();
 
                 using (var command = new NpgsqlCommand("UPDATE " + TableName + " SET quantity = @q WHERE name = @n", conn))
                 {
-                    command.Parameters.AddWithValue("n", "banana");
-                    command.Parameters.AddWithValue("q", 200);
+                    command.Parameters.AddWithValue("n", strName);
+                    command.Parameters.AddWithValue("q", strQuantity);
                     int nRows = command.ExecuteNonQuery();
-                    Console.Out.WriteLine(String.Format("Number of rows updated={0}", nRows));
+                    StrFeedBack = String.Format("Number of rows updated={0}", nRows);
                 }
 
                 conn.Close();
             }
-
-            Console.WriteLine("Press RETURN to exit");
-            Console.ReadLine();
         }
-        public void DeleteOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName)
+        public void DeleteOpenGaussDbTable(string Host, string User, string DBname, string Port, string Password, string TableName, string strName, out string StrFeedBack)
         {
-            // Build connection string using parameters from portal
-            //
             string connString =
-                String.Format(
-                    "Server={0}; User Id={1}; Database={2}; Port={3}; Password={4};SSLMode=Prefer",
+            String.Format(ConnectStringFormat,
                     Host,
                     User,
                     DBname,
@@ -247,22 +286,18 @@ namespace ConsoleApp4OpenGauss
 
             using (var conn = new NpgsqlConnection(connString))
             {
-                Console.Out.WriteLine("Opening connection");
                 conn.Open();
 
                 using (var command = new NpgsqlCommand("DELETE FROM " + TableName + " WHERE name = @n", conn))
                 {
-                    command.Parameters.AddWithValue("n", "orange");
+                    command.Parameters.AddWithValue("n", strName);
 
                     int nRows = command.ExecuteNonQuery();
-                    Console.Out.WriteLine(String.Format("Number of rows deleted={0}", nRows));
+                    StrFeedBack = String.Format("Number of rows deleted={0}", nRows);
                 }
 
                 conn.Close();
             }
-
-            Console.WriteLine("Press RETURN to exit");
-            Console.ReadLine();
         }
     }
 
