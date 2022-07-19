@@ -35,3 +35,6 @@ C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\S
 C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\obj\Debug\ConsoleApp4OpenGauss.csproj.CopyComplete
 C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\obj\Debug\ConsoleApp4OpenGauss.exe
 C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\obj\Debug\ConsoleApp4OpenGauss.pdb
+C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\bin\Debug\ClassLibrary4OpenGauss.dll
+C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\bin\Debug\ClassLibrary4OpenGauss.pdb
+C:\Users\udoug\source\repos\GitHub\MyDataBaseIdea\openGause_base_on_PostgreSQL\Solution4OpenGauss\ConsoleApp4OpenGauss\bin\Debug\ClassLibrary4OpenGauss.dll.config
